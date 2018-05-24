@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class TileControl : MonoBehaviour
 {
-    public Color color;
+    public Color mouseOverColor, clickedColor;
 
     SpriteRenderer sprite;
+
+    bool isClickable = false;
 
     private void Start()
     {
@@ -21,12 +23,24 @@ public class TileControl : MonoBehaviour
     {
         //change tile color
         //Debug.Log("Moused over " + gameObject.name);
-        sprite.color = color;
+        sprite.color = mouseOverColor;
+        isClickable = true;
     }
 
     private void OnMouseExit()
     {
         //Debug.Log("Mouse off " + gameObject.name);
         sprite.color = Color.white;
+        isClickable = false;
+    }
+
+    private void OnMouseDown()
+    {
+        if (isClickable) { sprite.color = clickedColor; }
+    }
+
+    private void OnMouseUp()
+    {
+        sprite.color = mouseOverColor;
     }
 }
