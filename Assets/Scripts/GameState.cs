@@ -28,6 +28,12 @@ public class GameState : MonoBehaviour
 
     public void Place(GameObject tile)
     {
-
+        if (playerOneTurn)
+        {
+            GameObject piece = Instantiate(playerOnePiece, transform.position, Quaternion.identity)
+                as GameObject;
+            piece.transform.parent = tile.transform;
+            piece.transform.localPosition = Vector2.zero;
+        }
     }
 }
