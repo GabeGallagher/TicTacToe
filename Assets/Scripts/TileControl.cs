@@ -19,17 +19,16 @@ public class TileControl : MonoBehaviour
         }
     }
 
+    //change color on hover
     private void OnMouseEnter()
     {
-        //change tile color
-        //Debug.Log("Moused over " + gameObject.name);
         sprite.color = mouseOverColor;
         isClickable = true;
     }
 
+    //revert color
     private void OnMouseExit()
     {
-        //Debug.Log("Mouse off " + gameObject.name);
         sprite.color = Color.white;
         isClickable = false;
     }
@@ -39,6 +38,7 @@ public class TileControl : MonoBehaviour
         if (isClickable) { sprite.color = clickedColor; }
     }
 
+    //place object
     private void OnMouseUp()
     {
         sprite.color = mouseOverColor;

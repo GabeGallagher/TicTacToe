@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameState : MonoBehaviour {
+public class GameState : MonoBehaviour
+{
 
 	// Use this for initialization
 	void Start () {
