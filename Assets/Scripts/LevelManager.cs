@@ -5,8 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
-    public float autoLoadNextLevelAfter;
-
     public void LoadLevel(string name)
     {
         Debug.Log("New level load: " + name);
