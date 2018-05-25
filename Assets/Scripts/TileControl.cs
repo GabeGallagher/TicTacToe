@@ -8,10 +8,13 @@ public class TileControl : MonoBehaviour
 
     SpriteRenderer sprite;
 
+    GameState gameState;
+
     bool isClickable = false;
 
     private void Start()
     {
+        gameState = gameObject.transform.parent.GetComponent<GameState>();
         sprite = gameObject.transform.Find("Sprite").GetComponent<SpriteRenderer>();
         if (sprite == null)
         {
@@ -42,5 +45,6 @@ public class TileControl : MonoBehaviour
     private void OnMouseUp()
     {
         sprite.color = mouseOverColor;
+        gameState.Place(gameObject);
     }
 }
