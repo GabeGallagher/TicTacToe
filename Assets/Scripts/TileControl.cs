@@ -6,11 +6,15 @@ public class TileControl : MonoBehaviour
 {
     public Color mouseOverColor, clickedColor;
 
+    public int[] location;
+
     SpriteRenderer sprite;
 
     GameState gameState;
 
     bool isClickable = false;
+
+    public bool isPlaceable = true;
 
     private void Start()
     {
@@ -22,11 +26,19 @@ public class TileControl : MonoBehaviour
         }
     }
 
+    public SpriteRenderer GetSprite()
+    {
+        return sprite;
+    }
+
     //change color on hover
     private void OnMouseEnter()
     {
-        sprite.color = mouseOverColor;
-        isClickable = true;
+        if (isPlaceable)
+        {
+            sprite.color = mouseOverColor;
+            isClickable = true;
+        }
     }
 
     //revert color

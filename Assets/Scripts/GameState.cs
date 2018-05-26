@@ -11,6 +11,11 @@ public class GameState : MonoBehaviour
 
     public GameObject playerOnePiece, playerTwoPiece;
 
+    int[,] board = {  { 0, 0, 0 },
+                      { 0, 0, 0 },
+                      { 0, 0, 0 }
+                    };
+
     bool playerOneTurn = true;
 
     private void Start()
@@ -18,7 +23,7 @@ public class GameState : MonoBehaviour
         int pieceIndex = Random.Range(0, pieces.Count);
         playerOnePiece = pieces[pieceIndex];
         List<GameObject> newSelection = new List<GameObject>();
-        for (int i = 0; i < pieces.Count; ++i)
+        for (int i = 0; i < pieces.Count; i++)
         {
             if (i != pieceIndex) { newSelection.Add(pieces[i]); }
         }
@@ -27,6 +32,7 @@ public class GameState : MonoBehaviour
 
     public void Place(GameObject tile)
     {
+        TileControl tileControl = tile.GetComponent<TileControl>();
         if (playerOneTurn)
         {
             GameObject piece = Instantiate(playerOnePiece, transform.position, Quaternion.identity)
@@ -34,6 +40,9 @@ public class GameState : MonoBehaviour
             piece.transform.parent = tile.transform;
             piece.transform.localPosition = Vector2.zero;
             playerOneTurn = false;
+            tileControl.isPlaceable = false;
+            tileControl.GetSprite().color = Color.white;
+            board[tileControl.location[0], tileControl.location[1]] = 1;
         }
         else
         {
@@ -42,6 +51,9 @@ public class GameState : MonoBehaviour
             piece.transform.parent = tile.transform;
             piece.transform.localPosition = Vector2.zero;
             playerOneTurn = true;
+            tileControl.isPlaceable = false;
+            tileControl.GetSprite().color = Color.white;
+            board[tileControl.location[0], tileControl.location[1]] = 2;
         }
     }
 
