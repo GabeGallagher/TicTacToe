@@ -15,7 +15,6 @@ public class GameState : MonoBehaviour
 
     private void Start()
     {
-        if (playerOneTurn) { turnText.text = "Player 1 Turn"; }
         int pieceIndex = Random.Range(0, pieces.Count);
         playerOnePiece = pieces[pieceIndex];
         List<GameObject> newSelection = new List<GameObject>();
@@ -34,6 +33,21 @@ public class GameState : MonoBehaviour
                 as GameObject;
             piece.transform.parent = tile.transform;
             piece.transform.localPosition = Vector2.zero;
+            playerOneTurn = false;
         }
+        else
+        {
+            GameObject piece = Instantiate(playerTwoPiece, transform.position, Quaternion.identity)
+                as GameObject;
+            piece.transform.parent = tile.transform;
+            piece.transform.localPosition = Vector2.zero;
+            playerOneTurn = true;
+        }
+    }
+
+    private void Update()
+    {
+        if (playerOneTurn) { turnText.text = "Player 1 Turn"; }
+        else { turnText.text = "Player 2 Turn"; }
     }
 }
