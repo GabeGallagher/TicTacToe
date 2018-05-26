@@ -30,6 +30,66 @@ public class GameState : MonoBehaviour
         playerTwoPiece = newSelection[Random.Range(0, newSelection.Count)];
     }
 
+    void CheckCount(int count)
+    {
+        if ((count == 3 && playerOneTurn) || (count == -3 && !playerOneTurn))
+        {
+            Debug.Log("Game Over");
+        }
+    }
+
+    void CheckWin(int[] location)
+    {
+        int count = 0;
+
+        //check row
+        for (int i = 0; i < 3; i++)
+        {
+            count += board[location[0], i];
+        }
+
+        CheckCount(count);
+
+        count = 0;
+
+        //check column
+        for (int i = 0; i < 3; i++)
+        {
+            count += board[i, location[0]];
+        }
+
+        CheckCount(count);
+
+        count = 0;
+
+        //if most recent piece was placed on a tile that could be a diagonal winner
+        if ((location[0] == 0 && location[1] == 2)
+            || (location[0] == 2 && location[1] == 0)
+            || (location[0] == location[1]))
+        {
+            //check diag
+            for (int i = 0; i < 3; i++)
+            {
+                count += board[i, i];
+            }
+
+            CheckCount(count);
+
+            count = 0;
+
+            //check other diag
+            int j = 2;
+
+            for (int i = 0; i < 3; i++)
+            {
+                count += board[i, j];
+                j--;
+            }
+
+            CheckCount(count); 
+        }
+    }
+
     public void Place(GameObject tile)
     {
         TileControl tileControl = tile.GetComponent<TileControl>();
@@ -53,7 +113,7 @@ public class GameState : MonoBehaviour
             playerOneTurn = true;
             tileControl.isPlaceable = false;
             tileControl.GetSprite().color = Color.white;
-            board[tileControl.location[0], tileControl.location[1]] = 2;
+            board[tileControl.location[0], tileControl.location[1]] = -1;
         }
     }
 
