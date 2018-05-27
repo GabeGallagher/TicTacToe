@@ -11,6 +11,8 @@ public class GameState : MonoBehaviour
 
     public GameObject playerOnePiece, playerTwoPiece;
 
+    GameObject buttons;
+
     int[,] board = {  { 0, 0, 0 },
                       { 0, 0, 0 },
                       { 0, 0, 0 }
@@ -30,6 +32,10 @@ public class GameState : MonoBehaviour
             if (i != pieceIndex) { newSelection.Add(pieces[i]); }
         }
         playerTwoPiece = newSelection[Random.Range(0, newSelection.Count)];
+
+        buttons = GameObject.Find("ButtonsObject");
+        if (buttons == null) { Debug.Log("Unable to find reference to ButtonsObject"); }
+        else { buttons.SetActive(false); }
     }
 
     void CheckCount(int count)
@@ -38,14 +44,15 @@ public class GameState : MonoBehaviour
         {
             gameOver = true;
 
-            if (playerOneTurn)
+            for (int i = 0; i < gameObject.transform.childCount; i++)
             {
-                turnText.text = "Player 2 Wins!";
+                gameObject.transform.GetChild(i).GetComponent<TileControl>().isPlaceable = false;
             }
-            else
-            {
-                turnText.text = "Player 1 Wins!";
-            }
+
+            buttons.SetActive(false);
+
+            if (playerOneTurn) { turnText.text = "Player 2 Wins!"; }
+            else { turnText.text = "Player 1 Wins!"; }
         }
     }
 
@@ -54,20 +61,14 @@ public class GameState : MonoBehaviour
         int count = 0;
 
         //check row
-        for (int i = 0; i < 3; i++)
-        {
-            count += board[location[0], i];
-        }
+        for (int i = 0; i < 3; i++) { count += board[location[0], i]; }
 
         CheckCount(count);
 
         count = 0;
 
         //check column
-        for (int i = 0; i < 3; i++)
-        {
-            count += board[i, location[1]];
-        }
+        for (int i = 0; i < 3; i++) { count += board[i, location[1]]; }
 
         CheckCount(count);
         
@@ -79,10 +80,7 @@ public class GameState : MonoBehaviour
             || (location[0] == location[1]))
         {
             //check diag
-            for (int i = 0; i < 3; i++)
-            {
-                count += board[i, i];
-            }
+            for (int i = 0; i < 3; i++) { count += board[i, i]; }
 
             CheckCount(count);
             
