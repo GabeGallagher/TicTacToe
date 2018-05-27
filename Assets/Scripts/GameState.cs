@@ -18,6 +18,8 @@ public class GameState : MonoBehaviour
 
     bool playerOneTurn = true;
 
+    bool gameOver = false;
+
     private void Start()
     {
         int pieceIndex = Random.Range(0, pieces.Count);
@@ -32,9 +34,18 @@ public class GameState : MonoBehaviour
 
     void CheckCount(int count)
     {
-        if ((count == 3 && playerOneTurn) || (count == -3 && !playerOneTurn))
+        if ((count == 3 && !playerOneTurn) || (count == -3 && playerOneTurn))
         {
-            Debug.Log("Game Over");
+            gameOver = true;
+
+            if (playerOneTurn)
+            {
+                turnText.text = "Player 2 Wins!";
+            }
+            else
+            {
+                turnText.text = "Player 1 Wins!";
+            }
         }
     }
 
@@ -55,11 +66,11 @@ public class GameState : MonoBehaviour
         //check column
         for (int i = 0; i < 3; i++)
         {
-            count += board[i, location[0]];
+            count += board[i, location[1]];
         }
 
         CheckCount(count);
-
+        
         count = 0;
 
         //if most recent piece was placed on a tile that could be a diagonal winner
@@ -74,7 +85,7 @@ public class GameState : MonoBehaviour
             }
 
             CheckCount(count);
-
+            
             count = 0;
 
             //check other diag
@@ -115,11 +126,15 @@ public class GameState : MonoBehaviour
             tileControl.GetSprite().color = Color.white;
             board[tileControl.location[0], tileControl.location[1]] = -1;
         }
+        CheckWin(tileControl.location);
     }
 
     private void Update()
     {
-        if (playerOneTurn) { turnText.text = "Player 1 Turn"; }
-        else { turnText.text = "Player 2 Turn"; }
+        if (!gameOver)
+        {
+            if (playerOneTurn) { turnText.text = "Player 1 Turn"; }
+            else { turnText.text = "Player 2 Turn"; } 
+        }
     }
 }
