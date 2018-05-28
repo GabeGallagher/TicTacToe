@@ -3,6 +3,53 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//simple class which records the moves from the game
+public class MoveRecord
+{
+    public MoveRecord(int[] loc, bool player)
+    {
+        location = loc;
+        playerOne = player;
+    }
+
+    int[] location;
+    bool playerOne;
+}
+
+//class used as container for MoveRecords and making them iterable through doubly linked list
+public class Node
+{
+    public Node(MoveRecord move) { m = move; }
+
+    MoveRecord m;
+    Node prev;
+    Node next;
+
+    public void SetPrev(Node node) { prev = node; }
+    public Node GetPrev() { return prev; }
+
+    public void SetNext(Node node) { next = node; }
+}
+
+//Doubly linked list which allows traversal through moveset as if it was a replay
+public class MoveRecorder
+{
+    Node head;
+    Node tail;
+
+    public void Turn(MoveRecord move, Node previousMove)
+    {
+        Node turn = new Node(move);
+
+        if (head == null) { head = turn; }
+
+        if (previousMove == null) { turn.SetPrev(head); }
+        else { turn.SetPrev(previousMove); }
+        turn.SetNext(null);
+        tail = turn;
+    }
+}
+
 public class GameState : MonoBehaviour
 {
     public Text turnText;
@@ -12,6 +59,10 @@ public class GameState : MonoBehaviour
     public GameObject playerOnePiece, playerTwoPiece;
 
     GameObject buttons;
+
+    MoveRecorder moveRecorder;
+
+    Node previousMove;
 
     int[,] board = {  { 0, 0, 0 },
                       { 0, 0, 0 },
@@ -24,6 +75,7 @@ public class GameState : MonoBehaviour
 
     private void Start()
     {
+        //randomly assign player pieces
         int pieceIndex = Random.Range(0, pieces.Count);
         playerOnePiece = pieces[pieceIndex];
         List<GameObject> newSelection = new List<GameObject>();
@@ -33,9 +85,16 @@ public class GameState : MonoBehaviour
         }
         playerTwoPiece = newSelection[Random.Range(0, newSelection.Count)];
 
+        //Functionality for buttons that appear when the game is over
         buttons = GameObject.Find("ButtonsObject");
         if (buttons == null) { Debug.Log("Unable to find reference to ButtonsObject"); }
         else { buttons.SetActive(false); }
+
+        //Setting up the move recorder
+        //since board is zero indexed, { -1, -1 } is functionally the empty board move
+        MoveRecord initialBoardState = new MoveRecord(new int[] { -1, -1 }, false);
+        moveRecorder = new MoveRecorder();
+        moveRecorder.Turn(initialBoardState, null);
     }
 
     void CheckCount(int count)
@@ -124,6 +183,8 @@ public class GameState : MonoBehaviour
             tileControl.GetSprite().color = Color.white;
             board[tileControl.location[0], tileControl.location[1]] = -1;
         }
+        MoveRecord turn = new MoveRecord(tileControl.location, playerOneTurn);
+        moveRecorder.Turn(turn, previousMove);
         CheckWin(tileControl.location);
     }
 
