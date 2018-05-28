@@ -883,6 +883,11 @@ Prefab:
       propertyPath: size
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 114365407836312992, guid: 07cbdce34c01fe94e9fd2877a004e081,
+        type: 2}
+      propertyPath: turnText
+      value: 
+      objectReference: {fileID: 1582902348}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 07cbdce34c01fe94e9fd2877a004e081, type: 2}
   m_IsPrefabParent: 0
@@ -1374,6 +1379,12 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8f4c07740235334438f5695661dac9c1, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &1582902348 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114412060536314122, guid: 72c5317251b1a7b4d8b99065dfcb5f7e,
+    type: 2}
+  m_PrefabInternal: {fileID: 641981593}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &1604066934
 GameObject:
   m_ObjectHideFlags: 0

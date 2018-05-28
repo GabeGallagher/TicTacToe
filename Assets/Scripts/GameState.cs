@@ -69,6 +69,8 @@ public class GameState : MonoBehaviour
     
     int[,] board;
 
+    int turnNumber;
+
     bool playerOneTurn = true;
 
     bool gameOver = false;
@@ -76,6 +78,7 @@ public class GameState : MonoBehaviour
     private void Start()
     {
         //initialize board
+        board = new int[size, size];
         for (int i = 0; i < size; i++)
         {
             for (int j = 0; j < size; j++) { board[i, j] = 0; }
@@ -167,7 +170,10 @@ public class GameState : MonoBehaviour
     //TODO make if contents of Place if statement a delegate
     public void Place(GameObject tile)
     {
+        turnNumber++;
+
         TileControl tileControl = tile.GetComponent<TileControl>();
+
         if (playerOneTurn)
         {
             GameObject piece = Instantiate(playerOnePiece, transform.position, Quaternion.identity)
@@ -190,9 +196,10 @@ public class GameState : MonoBehaviour
             tileControl.GetSprite().color = Color.white;
             board[tileControl.location[0], tileControl.location[1]] = -1;
         }
+
         MoveRecord turn = new MoveRecord(tileControl.location, playerOneTurn);
         moveRecorder.Turn(turn, previousMove);
-        CheckWin(tileControl.location);
+        if (turnNumber == (size + 1) / 2) { CheckWin(tileControl.location); }
     }
 
     private void Update()
