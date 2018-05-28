@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TileControl : MonoBehaviour
 {
@@ -14,7 +12,7 @@ public class TileControl : MonoBehaviour
 
     bool isClickable = false;
 
-    public bool isPlaceable = true;
+    bool isPlaceable = true;
 
     private void Start()
     {
@@ -26,10 +24,9 @@ public class TileControl : MonoBehaviour
         }
     }
 
-    public SpriteRenderer GetSprite()
-    {
-        return sprite;
-    }
+    public SpriteRenderer GetSprite() { return sprite; }
+
+    public void SetIsPlaceable(bool b) { isPlaceable = b; }
 
     //change color on hover
     private void OnMouseEnter()

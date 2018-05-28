@@ -114,7 +114,7 @@ public class GameState : MonoBehaviour
 
             for (int i = 0; i < gameObject.transform.childCount; i++)
             {
-                gameObject.transform.GetChild(i).GetComponent<TileControl>().isPlaceable = false;
+                gameObject.transform.GetChild(i).GetComponent<TileControl>().SetIsPlaceable(false);
             }
 
             buttons.SetActive(true);
@@ -184,7 +184,7 @@ public class GameState : MonoBehaviour
             piece.transform.parent = tile.transform;
             piece.transform.localPosition = Vector2.zero;
             playerOneTurn = false;
-            tileControl.isPlaceable = false;
+            tileControl.SetIsPlaceable(false);
             tileControl.GetSprite().color = Color.white;
             board[tileControl.location[0], tileControl.location[1]] = 1;
         }
@@ -195,7 +195,7 @@ public class GameState : MonoBehaviour
             piece.transform.parent = tile.transform;
             piece.transform.localPosition = Vector2.zero;
             playerOneTurn = true;
-            tileControl.isPlaceable = false;
+            tileControl.SetIsPlaceable(false);
             tileControl.GetSprite().color = Color.white;
             board[tileControl.location[0], tileControl.location[1]] = -1;
         }

@@ -1,16 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class StartButtonScript : MonoBehaviour
 {
     public Text title;
 
     public GameObject buttonsParent, buttonsParent_01;
-
-    bool isClickable = false;
 
     public void EnableNewButtons()
     {
