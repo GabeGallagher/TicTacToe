@@ -58,17 +58,16 @@ public class GameState : MonoBehaviour
 
     public GameObject playerOnePiece, playerTwoPiece;
 
+    //board is size x size
+    public int size;
+
     GameObject buttons;
 
     MoveRecorder moveRecorder;
 
     Node previousMove;
-
-    //TODO move this to start menu and make it change to either a 3x3 or 4x4 board
-    int[,] board = {  { 0, 0, 0 },
-                      { 0, 0, 0 },
-                      { 0, 0, 0 }
-                    };
+    
+    int[,] board;
 
     bool playerOneTurn = true;
 
@@ -76,6 +75,12 @@ public class GameState : MonoBehaviour
 
     private void Start()
     {
+        //initialize board
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++) { board[i, j] = 0; }
+        }
+
         //randomly assign player pieces
         int pieceIndex = Random.Range(0, pieces.Count);
         playerOnePiece = pieces[pieceIndex];
@@ -97,11 +102,10 @@ public class GameState : MonoBehaviour
         moveRecorder = new MoveRecorder();
         moveRecorder.Turn(initialBoardState, null);
     }
-
-    //TODO update CheckCount function so it's useable in a 3x3 or 4x4 board
+    
     void CheckCount(int count)
     {
-        if ((count == 3 && !playerOneTurn) || (count == -3 && playerOneTurn))
+        if ((count == size && !playerOneTurn) || (count == -1 * size && playerOneTurn))
         {
             gameOver = true;
 
@@ -116,42 +120,41 @@ public class GameState : MonoBehaviour
             else { turnText.text = "Player 1 Wins!"; }
         }
     }
-
-    //TODO update CheckWin function so it's useable in a 3x3 or 4x4 board
+    
     void CheckWin(int[] location)
     {
         int count = 0;
 
         //check row
-        for (int i = 0; i < 3; i++) { count += board[location[0], i]; }
+        for (int i = 0; i < size; i++) { count += board[location[0], i]; }
 
         CheckCount(count);
 
         count = 0;
 
         //check column
-        for (int i = 0; i < 3; i++) { count += board[i, location[1]]; }
+        for (int i = 0; i < size; i++) { count += board[i, location[1]]; }
 
         CheckCount(count);
         
         count = 0;
 
         //if most recent piece was placed on a tile that could be a diagonal winner
-        if ((location[0] == 0 && location[1] == 2)
-            || (location[0] == 2 && location[1] == 0)
+        if ((location[0] == 0 && location[1] == size - 1)
+            || (location[0] == size - 1 && location[1] == 0)
             || (location[0] == location[1]))
         {
             //check diag
-            for (int i = 0; i < 3; i++) { count += board[i, i]; }
+            for (int i = 0; i < size; i++) { count += board[i, i]; }
 
             CheckCount(count);
             
             count = 0;
 
             //check other diag
-            int j = 2;
+            int j = size - 1;
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < size; i++)
             {
                 count += board[i, j];
                 j--;
