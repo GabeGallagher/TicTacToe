@@ -167,8 +167,8 @@ public class GameState : MonoBehaviour
 
             CheckCount(count); 
         }
-
-        //TODO create tie state
+        
+        //Handle tie
         if(turnNumber == size * size)
         {
             FinishGame();
@@ -176,39 +176,40 @@ public class GameState : MonoBehaviour
         }
     }
 
-    //TODO make if contents of Place if statement a delegate
-    public void Place(GameObject tile)
+    //place pieces on board
+    public void InstantiatePiece(GameObject tile, GameObject piecePrefab, int scoreInt)
     {
-        turnNumber++;
-
         TileControl tileControl = tile.GetComponent<TileControl>();
 
-        if (playerOneTurn)
-        {
-            GameObject piece = Instantiate(playerOnePiece, transform.position, Quaternion.identity)
-                as GameObject;
-            piece.transform.parent = tile.transform;
-            piece.transform.localPosition = Vector2.zero;
-            playerOneTurn = false;
-            tileControl.SetIsPlaceable(false);
-            tileControl.GetSprite().color = Color.white;
-            board[tileControl.location[0], tileControl.location[1]] = 1;
-        }
-        else
-        {
-            GameObject piece = Instantiate(playerTwoPiece, transform.position, Quaternion.identity)
-                as GameObject;
-            piece.transform.parent = tile.transform;
-            piece.transform.localPosition = Vector2.zero;
-            playerOneTurn = true;
-            tileControl.SetIsPlaceable(false);
-            tileControl.GetSprite().color = Color.white;
-            board[tileControl.location[0], tileControl.location[1]] = -1;
-        }
+        GameObject piece = Instantiate(piecePrefab, transform.position, Quaternion.identity)
+            as GameObject;
+        piece.transform.parent = tile.transform;
+        piece.transform.localPosition = Vector2.zero;
+        playerOneTurn = false;
+        tileControl.SetIsPlaceable(false);
+        tileControl.GetSprite().color = Color.white;
+        board[tileControl.location[0], tileControl.location[1]] = scoreInt;
 
         MoveRecord turn = new MoveRecord(tileControl.location, playerOneTurn);
         moveRecorder.Turn(turn, previousMove);
         if (turnNumber >= (size * 2) - 1) { CheckWin(tileControl.location); }
+    }
+
+    //Change piece based on whose turn it is
+    public void Place(GameObject tile)
+    {
+        turnNumber++;
+
+        if (playerOneTurn)
+        {
+            GameObject piecePrefab = playerOnePiece;
+            InstantiatePiece(tile, piecePrefab, 1);
+        }
+        else
+        {
+            GameObject piecePrefab = playerTwoPiece;
+            InstantiatePiece(tile, piecePrefab, -1);
+        }
     }
 
     private void Update()
