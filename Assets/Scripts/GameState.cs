@@ -105,23 +105,25 @@ public class GameState : MonoBehaviour
         moveRecorder = new MoveRecorder();
         moveRecorder.Turn(initialBoardState, null);
     }
+
+    void FinishGame()
+    {
+        gameOver = true;
+
+        for (int i = 0; i < gameObject.transform.childCount; i++)
+        {
+            gameObject.transform.GetChild(i).GetComponent<TileControl>().SetIsPlaceable(false);
+        }
+
+        buttons.SetActive(true);
+
+        if (playerOneTurn) { turnText.text = "Player 2 Wins!"; }
+        else { turnText.text = "Player 1 Wins!"; }
+    }
     
     void CheckCount(int count)
     {
-        if ((count == size && !playerOneTurn) || (count == -1 * size && playerOneTurn))
-        {
-            gameOver = true;
-
-            for (int i = 0; i < gameObject.transform.childCount; i++)
-            {
-                gameObject.transform.GetChild(i).GetComponent<TileControl>().SetIsPlaceable(false);
-            }
-
-            buttons.SetActive(true);
-
-            if (playerOneTurn) { turnText.text = "Player 2 Wins!"; }
-            else { turnText.text = "Player 1 Wins!"; }
-        }
+        if ((count == size && !playerOneTurn) || (count == -1 * size && playerOneTurn)) { FinishGame(); }
     }
     
     void CheckWin(int[] location)
@@ -167,7 +169,11 @@ public class GameState : MonoBehaviour
         }
 
         //TODO create tie state
-        if(turnNumber == size * size) { Debug.Log("Tie Game"); }
+        if(turnNumber == size * size)
+        {
+            FinishGame();
+            turnText.text = "Tie Game!";
+        }
     }
 
     //TODO make if contents of Place if statement a delegate
