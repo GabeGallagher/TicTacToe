@@ -64,6 +64,7 @@ public class GameState : MonoBehaviour
 
     Node previousMove;
 
+    //TODO move this to start menu and make it change to either a 3x3 or 4x4 board
     int[,] board = {  { 0, 0, 0 },
                       { 0, 0, 0 },
                       { 0, 0, 0 }
@@ -97,6 +98,7 @@ public class GameState : MonoBehaviour
         moveRecorder.Turn(initialBoardState, null);
     }
 
+    //TODO update CheckCount function so it's useable in a 3x3 or 4x4 board
     void CheckCount(int count)
     {
         if ((count == 3 && !playerOneTurn) || (count == -3 && playerOneTurn))
@@ -115,6 +117,7 @@ public class GameState : MonoBehaviour
         }
     }
 
+    //TODO update CheckWin function so it's useable in a 3x3 or 4x4 board
     void CheckWin(int[] location)
     {
         int count = 0;
@@ -158,6 +161,7 @@ public class GameState : MonoBehaviour
         }
     }
 
+    //TODO make if contents of Place if statement a delegate
     public void Place(GameObject tile)
     {
         TileControl tileControl = tile.GetComponent<TileControl>();
