@@ -69,7 +69,7 @@ public class GameState : MonoBehaviour
     
     int[,] board;
 
-    int turnNumber;
+    int turnNumber = 0;
 
     bool playerOneTurn = true;
 
@@ -117,7 +117,7 @@ public class GameState : MonoBehaviour
                 gameObject.transform.GetChild(i).GetComponent<TileControl>().isPlaceable = false;
             }
 
-            buttons.SetActive(false);
+            buttons.SetActive(true);
 
             if (playerOneTurn) { turnText.text = "Player 2 Wins!"; }
             else { turnText.text = "Player 1 Wins!"; }
@@ -165,6 +165,9 @@ public class GameState : MonoBehaviour
 
             CheckCount(count); 
         }
+
+        //TODO create tie state
+        if(turnNumber == size * size) { Debug.Log("Tie Game"); }
     }
 
     //TODO make if contents of Place if statement a delegate
@@ -199,7 +202,7 @@ public class GameState : MonoBehaviour
 
         MoveRecord turn = new MoveRecord(tileControl.location, playerOneTurn);
         moveRecorder.Turn(turn, previousMove);
-        if (turnNumber == (size + 1) / 2) { CheckWin(tileControl.location); }
+        if (turnNumber >= (size * 2) - 1) { CheckWin(tileControl.location); }
     }
 
     private void Update()

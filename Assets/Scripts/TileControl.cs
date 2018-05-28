@@ -56,7 +56,10 @@ public class TileControl : MonoBehaviour
     //place object
     private void OnMouseUp()
     {
-        sprite.color = mouseOverColor;
-        gameState.Place(gameObject);
+        if (isPlaceable)
+        {
+            sprite.color = mouseOverColor;
+            gameState.Place(gameObject); 
+        }
     }
 }
