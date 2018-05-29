@@ -25,7 +25,7 @@ public class Node
     Node prev;
     Node next;
 
-    public void SetPrev(Node node) { prev = node; }
+    public void SetPrev(Node node) { prev = node; Debug.Log(prev); }
     public Node GetPrev() { return prev; }
 
     public void SetNext(Node node) { next = node; }
@@ -45,6 +45,7 @@ public class MoveRecorder
 
         if (previousMove == null) { turn.SetPrev(head); }
         else { turn.SetPrev(previousMove); }
+        previousMove.SetNext(turn);
         turn.SetNext(null);
         tail = turn;
     }
